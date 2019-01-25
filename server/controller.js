@@ -7,8 +7,12 @@ module.exports={
             console.log(err)
         })        
     },
-    createProduct:(req,res) =>{
-        res.status(200).json("Yoooohoooooo")
+    createProduct:(req, res) => {
+        const { product_name, url, price } = req.body;
+        req.app.get('db').create_product([product_name, url, price])
+            .then(() => {
+                res.sendStatus(200)
+            })
     }
 
 }
