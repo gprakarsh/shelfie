@@ -38,15 +38,15 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      
         <div className="App">
 
-          <Link to='/'><Dashboard inventory={this.state.inventory} handleGetInventory={this.handleGetInventory} handleSelection={this.handleSelection} />
+          <Dashboard inventory={this.state.inventory} handleGetInventory={this.handleGetInventory} handleSelection={this.handleSelection} />
 
           <Header />
           <Form handleGetInventory={this.handleGetInventory} selected={this.state.selected} />
         </div>
-      </Router>
+      
     );
   }
 }
