@@ -7,9 +7,21 @@ export default class Form extends Component {
         this.state = {
             url: "",
             name: "",
-            price: 0
+            price: 0,
+            id: null,
+            buttonName: 'Add To Inventory'
         }
     }
+
+    componentDidUpdate(oldProps) {
+        console.log(oldProps);
+        console.log(this.props.selected);
+        if (oldProps.selected !== this.props.selected) {
+            let { product_name, url, price, id } = this.props.selected;
+            this.setState({ url: url, name: product_name, price: price, id: id, buttonName: 'Save Changes' })            
+        }
+    }
+
     handleURLChange(val) {
         this.setState({ url: val })
     }
@@ -23,11 +35,11 @@ export default class Form extends Component {
     }
     handleInventory() {
         let productObj = {
-            product_name:this.state.name,
-            url:this.state.url,
-            price:this.state.price
+            product_name: this.state.name,
+            url: this.state.url,
+            price: this.state.price
         }
-        axios.post(`/api/product`,productObj).then(()=>{
+        axios.post(`/api/product`, productObj).then(() => {
             this.props.handleGetInventory()
             this.handleCancel()
         })
@@ -36,14 +48,15 @@ export default class Form extends Component {
             name: "",
             price: 0
         })
-        
-        
+
+
     }
     handleCancel() {
         this.setState({
             url: "",
             name: "",
-            price: 0
+            price: 0,
+            buttonName: "Add To Inventory"
         })
     }
 
@@ -56,8 +69,8 @@ export default class Form extends Component {
                 <input placeholder="Enter product name Here" onChange={(e) => this.handleNameChange(e.target.value)} value={this.state.name} />
                 {"Price:"}
                 <input placeholder="Enter price Here" onChange={(e) => this.handlePriceChange(e.target.value)} value={this.state.price} />
-                <button onClick={() => this.handleInventory()}>Add To Inventory</button>
-                <button onClick={() => this.handleCancel()}>Cancel</button>                
+                <button onClick={() => this.handleInventory()}>{this.state.buttonName}</button>
+                <button onClick={() => this.handleCancel()}>Cancel</button>
             </div>
         )
     }

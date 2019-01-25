@@ -9,9 +9,11 @@ class App extends Component {
   constructor(){
     super();
     this.state={
-      inventory:[]
+      inventory:[],
+      selected:{}
     }
     this.handleGetInventory=this.handleGetInventory.bind(this);
+    this.handleSelection=this.handleSelection.bind(this);
   }
 
   handleGetInventory(){
@@ -20,17 +22,25 @@ class App extends Component {
     )    
   }
 
-  componentDidMount(){
-    
+  componentDidMount(){    
     this.handleGetInventory()
+  }
+
+  handleSelection(id){
+    console.log()
+    for(let i=0;i<this.state.inventory.length;i++){
+      if(id===this.state.inventory[i].id){
+        this.setState({selected:this.state.inventory[i]})
+      }
+    }
   }
 
   render() {
     return (
       <div className="App">
         <Header />
-        <Dashboard inventory={this.state.inventory} />
-        <Form handleGetInventory={this.handleGetInventory} inventory={this.state.inventory}/>
+        <Dashboard inventory={this.state.inventory} handleGetInventory={this.handleGetInventory} handleSelection={this.handleSelection}/>
+        <Form handleGetInventory={this.handleGetInventory} selected={this.state.selected} />
       </div>
     );
   }
