@@ -11,6 +11,7 @@ class App extends Component {
     this.state={
       inventory:[]
     }
+    this.handleGetInventory=this.handleGetInventory.bind(this);
   }
 
   handleGetInventory(){
@@ -22,17 +23,14 @@ class App extends Component {
   componentDidMount(){
     
     this.handleGetInventory()
-    console.log(this.state)
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
-        {console.log(this.state)}
         <Header />
-        <Dashboard inventory={this.state.inventory}/>
-        <Form />
+        <Dashboard inventory={this.state.inventory} />
+        <Form handleGetInventory={this.handleGetInventory} inventory={this.state.inventory}/>
       </div>
     );
   }

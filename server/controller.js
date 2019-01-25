@@ -13,6 +13,12 @@ module.exports={
             .then(() => {
                 res.sendStatus(200)
             })
+    },
+    deleteProduct:(req, res) => {
+        const { id } = req.params
+        req.app.get('db').delete_product(id).then(() => {
+            res.sendStatus(200)
+        })
     }
 
 }

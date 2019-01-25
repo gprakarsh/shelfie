@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Form extends Component {
     constructor() {
@@ -6,8 +7,7 @@ export default class Form extends Component {
         this.state = {
             url: "",
             name: "",
-            price: 0,
-            inventory: []
+            price: 0
         }
     }
     handleURLChange(val) {
@@ -22,19 +22,22 @@ export default class Form extends Component {
 
     }
     handleInventory() {
-        let inventory = this.state.inventory.slice();
-        let newProduct = {
-            name: this.state.name,
-            url: this.state.url,
-            price: this.state.price
+        let productObj = {
+            product_name:this.state.name,
+            url:this.state.url,
+            price:this.state.price
         }
-        inventory.push(newProduct);
+        axios.post(`/api/product`,productObj).then(()=>{
+            this.props.handleGetInventory()
+            this.handleCancel()
+        })
         this.setState({
-            inventory: inventory,
             url: "",
             name: "",
             price: 0
         })
+        
+        
     }
     handleCancel() {
         this.setState({
@@ -54,7 +57,7 @@ export default class Form extends Component {
                 {"Price:"}
                 <input placeholder="Enter price Here" onChange={(e) => this.handlePriceChange(e.target.value)} value={this.state.price} />
                 <button onClick={() => this.handleInventory()}>Add To Inventory</button>
-                <button onClick={() => this.handleCancel()}>Cancel</button>
+                <button onClick={() => this.handleCancel()}>Cancel</button>                
             </div>
         )
     }
