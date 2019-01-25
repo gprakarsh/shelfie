@@ -19,6 +19,13 @@ module.exports={
         req.app.get('db').delete_product(id).then(() => {
             res.sendStatus(200)
         })
-    }
+    },
+    editProduct:(req, res) => {
+        const { id } = req.params;
+        const { product_name, url, price } = req.body;
+        req.app.get('db').edit_product([id,product_name,url,price]).then(() => {
+            res.sendStatus(200)
+        })
 
+}
 }

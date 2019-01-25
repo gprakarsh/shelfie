@@ -21,6 +21,8 @@ app.post(`/api/product`,ctrl.createProduct)
 
 app.delete(`/api/product/:id`,ctrl.deleteProduct)
 
+app.put(`/api/product/:id`,ctrl.editProduct)
+
 const PORT = process.env.PORT
 
 app.listen(PORT,()=>{console.log(`Server running on ${PORT}`)})

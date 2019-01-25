@@ -13,6 +13,18 @@ export default class Form extends Component {
         }
     }
 
+    handleEditProduct(id){
+        let edittedProduct = {
+            product_name:this.state.name,
+            url:this.state.url,
+            price:this.state.price
+        }
+        axios.put(`/api/product/${id}`,edittedProduct)
+        .then(()=>{
+            this.props.handleGetInventory()
+        })
+    }
+
     componentDidUpdate(oldProps) {
         console.log(oldProps);
         console.log(this.props.selected);
@@ -34,6 +46,10 @@ export default class Form extends Component {
 
     }
     handleInventory() {
+        if (this.state.buttonName === 'Save Changes'){
+            this.handleEditProduct(this.state.id)
+        }
+        else{
         let productObj = {
             product_name: this.state.name,
             url: this.state.url,
@@ -43,6 +59,7 @@ export default class Form extends Component {
             this.props.handleGetInventory()
             this.handleCancel()
         })
+    }
         this.setState({
             url: "",
             name: "",
