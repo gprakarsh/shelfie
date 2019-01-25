@@ -12,17 +12,31 @@ export default class Form extends Component {
             buttonName: 'Add To Inventory'
         }
     }
-
-    handleEditProduct(id){
-        let edittedProduct = {
-            product_name:this.state.name,
-            url:this.state.url,
-            price:this.state.price
-        }
-        axios.put(`/api/product/${id}`,edittedProduct)
-        .then(()=>{
-            this.props.handleGetInventory()
+    handleGetProduct(id) {
+        axios.get(`/api/product/${id}`).then((res) => {
+            this.setState({
+                url: res.url,
+                name: res.product_name,
+                price: res.price,
+                id: res.id
+            })
         })
+    }
+
+    componentDidMount(){
+        this.handleGetProduct(this.state.id);
+    }
+    
+    handleEditProduct(id) {
+        let edittedProduct = {
+            product_name: this.state.name,
+            url: this.state.url,
+            price: this.state.price
+        }
+        axios.put(`/api/product/${id}`, edittedProduct)
+            .then(() => {
+                this.props.handleGetInventory()
+            })
     }
 
     componentDidUpdate(oldProps) {
@@ -30,7 +44,7 @@ export default class Form extends Component {
         console.log(this.props.selected);
         if (oldProps.selected !== this.props.selected) {
             let { product_name, url, price, id } = this.props.selected;
-            this.setState({ url: url, name: product_name, price: price, id: id, buttonName: 'Save Changes' })            
+            this.setState({ url: url, name: product_name, price: price, id: id, buttonName: 'Save Changes' })
         }
     }
 
@@ -46,20 +60,20 @@ export default class Form extends Component {
 
     }
     handleInventory() {
-        if (this.state.buttonName === 'Save Changes'){
+        if (this.state.buttonName === 'Save Changes') {
             this.handleEditProduct(this.state.id)
         }
-        else{
-        let productObj = {
-            product_name: this.state.name,
-            url: this.state.url,
-            price: this.state.price
+        else {
+            let productObj = {
+                product_name: this.state.name,
+                url: this.state.url,
+                price: this.state.price
+            }
+            axios.post(`/api/product`, productObj).then(() => {
+                this.props.handleGetInventory()
+                this.handleCancel()
+            })
         }
-        axios.post(`/api/product`, productObj).then(() => {
-            this.props.handleGetInventory()
-            this.handleCancel()
-        })
-    }
         this.setState({
             url: "",
             name: "",

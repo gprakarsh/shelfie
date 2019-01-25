@@ -3,7 +3,23 @@ import Product from '../Product/Product';
 import axios from 'axios';
 
 export default class Dashboard extends Component {
+    constructor() {
+        super();
+        this.state = {
+          inventory: []      
+        }
+        this.handleGetInventory = this.handleGetInventory.bind(this);
+      }
     
+      handleGetInventory() {
+        axios.get('/api/inventory').then(res =>
+          this.setState({ inventory: res.data })
+        )
+      }
+    
+      componentDidMount() {
+        this.handleGetInventory()
+      }
     handleDeleteProduct(id){    
         axios.delete(`/api/product/${id}`).then(()=>{
             this.props.handleGetInventory();
